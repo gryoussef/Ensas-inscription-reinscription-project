@@ -56,8 +56,7 @@ export default class FourthStep extends Component {
 
 
                    <br></br>
-                   <RaisedButton  label="Back"  onClick={this.back} ></RaisedButton>
-                   <RaisedButton label="Continue"  onClick={this.continue}></RaisedButton>
+      
                   
                </React.Fragment>
         

@@ -52,8 +52,7 @@ import '../App.css';
                      />
                     <br></br>
  
-                    <RaisedButton disabled={true} label="Back"  ></RaisedButton>
-                    <RaisedButton  label="Continue" disabled={this.props.signedIn()} onClick={this.continue} ></RaisedButton>
+                    
                     </React.Fragment>
          
         )

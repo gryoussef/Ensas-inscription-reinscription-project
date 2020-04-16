@@ -29,7 +29,7 @@ export default class Connexion extends Component {
                      />
                     <div className="form-group"><button className="btn btn-primary btn-block bg-primary" type="submit">Sign In</button>
                     </div>
-                    <a className="already" href="#">You already have an account? Login here.</a>
+                    <a className="already" href="/connexion">You already have an account? Login here.</a>
                 </form>
             </div>
             </div>

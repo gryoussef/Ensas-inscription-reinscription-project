@@ -5,8 +5,14 @@ import ThirdStep from './ThirdStep';
 import Success from './Success';
 import FourthStep from './FourthStep';
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import { Steps, Button, message } from 'antd';
+import TestStep from './TestSep'
+const Step = Steps.Step;
  class RegistrationForm extends Component {
-    state={
+    constructor(props) {
+        super(props);
+        this.state = {
+        current:0,
         step:1,
         token:'',
         cin:'',
@@ -38,8 +44,10 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
         etablissement_precedant:'',
         ville_precedant:''
 
-    };
-    nextStep=()=>{
+
+        };
+      }
+      nextStep=()=>{
         const {step}=this.state;
         this.setState({
             step:step+1
@@ -66,8 +74,18 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
         console.log(value);
         
     }
-    render() {
-        const {step}=this.state;
+
+    
+      next() {
+        const current = this.state.current + 1;
+        this.setState({ current });
+      }
+      prev() {
+        const current = this.state.current - 1;
+        this.setState({ current });
+      }
+      render() {
+        const { current } = this.state;
         const {cin,cne,email,password}=this.state;
         const values_step1={cin,cne,email,password};
         const {firstName_Fr, lastName_Fr,firstName_Ar,nationalite, telephone,address, lastName_Ar,date_Naissance,lieu_Naissance}=this.state;
@@ -75,43 +93,76 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
         const {nom_Prenom_Pere,profession_Pere,nom_Prenom_mere,profession_mere,adresse_parent}=this.state;
         const values_step3={nom_Prenom_Pere,profession_Pere,nom_Prenom_mere,profession_mere,adresse_parent};
 
- 
-        switch (step) {
-            case 1:
-            return(
-                <MuiThemeProvider>
-                <FirstStep nextStep={this.nextStep} signedIn={this.signedIn} handleGoogleAuth={this.handleGoogleAuth} handleChange={this.handleChange} values={values_step1}></FirstStep>
-                </MuiThemeProvider>
+        const steps = [{
+          title: 'First',
+          content:<MuiThemeProvider>
+          <FirstStep nextStep={this.nextStep} signedIn={this.signedIn} handleGoogleAuth={this.handleGoogleAuth} handleChange={this.handleChange} values={values_step1}></FirstStep>
+          </MuiThemeProvider>,
+        }, {
+          title: 'Second',
+          content: <MuiThemeProvider>
+          <SecondeStep nextStep={this.nextStep} prevStep={this.prevStep} handleChange={this.handleChange} values={values_step2}></SecondeStep>
+          </MuiThemeProvider>,
+        }, {
+          title: 'Last',
+          content:  <MuiThemeProvider>
+          <ThirdStep nextStep={this.nextStep} prevStep={this.prevStep} handleChange={this.handleChange} values={values_step3}></ThirdStep>
+          </MuiThemeProvider>,
+        },
+        {
+          title: 'Last',
+          content:  <MuiThemeProvider>
+          <FourthStep nextStep={this.nextStep} prevStep={this.prevStep} handleChange={this.handleChange} values={values_step3}></FourthStep>
+          </MuiThemeProvider>,
+        },
+        {
+          title: 'Last',
+          content: <MuiThemeProvider>
+          <Success></Success>
+          </MuiThemeProvider>,
+        }];
 
-            )
-            case 2:
-                return(
-                    <MuiThemeProvider>
-                    <SecondeStep nextStep={this.nextStep} prevStep={this.prevStep} handleChange={this.handleChange} values={values_step2}></SecondeStep>
-                    </MuiThemeProvider>
-                );
-            case 3:
-                return(
-                    <MuiThemeProvider>
-                    <ThirdStep nextStep={this.nextStep} prevStep={this.prevStep} handleChange={this.handleChange} values={values_step3}></ThirdStep>
-                    </MuiThemeProvider>
-                );
-            case 4:
-                return(
-                    <MuiThemeProvider>
-                    <FourthStep nextStep={this.nextStep} prevStep={this.prevStep} handleChange={this.handleChange} values={values_step3}></FourthStep>
-                    </MuiThemeProvider>
-                );
-            case 5:
-                return(
-                    <MuiThemeProvider>
-                   <Success></Success>
-                   </MuiThemeProvider>
-                );
-            
-            
-        }
+
+        return (
+         
+         <div className="form" style={ formStyle}>
+            <Steps current={current} >
+              {steps.map(item => <Step key={item.title} title={item.title} />)}
+            </Steps>
+
+            <div className="steps-content"> {
+            steps[this.state.current].content
+            }</div>
+            <div className="steps-action">
+            {
+                this.state.current > 0
+                &&
+                <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
+                  Previous
+                </Button>
+              }
+              {
+                this.state.current < steps.length - 1
+                &&
+                <Button type="primary" onClick={() => this.next()}>Next</Button>
+              }
+
+              {
+                this.state.current === steps.length - 1
+                &&
+                <Button type="primary" onClick={() => message.success('Processing complete!')}>Done</Button>
+              }
+
+              
+            </div>
+          </div>
+        );
+      }
   
-    }
 }
+
 export default RegistrationForm ;
+const formStyle={
+marginLeft:'300px',
+width:'65%'
+}

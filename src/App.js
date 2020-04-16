@@ -4,7 +4,7 @@ import './App.css';
 import Connexion  from "./components/Connexion";
 import {BrowserRouter as Router,Route,Switch }from 'react-router-dom';
 import RegistrationForm  from "./components/RegistrationForm";
-
+import StudentDashboard from "./components/StudentDashboard"
 function App() {
   return (
     <div className="App">
@@ -17,9 +17,12 @@ function App() {
                <RegistrationForm></RegistrationForm>
            </div>
         
-        )}></Route>
+        )}>
+
+      </Route>
       <Route path="/" component={Connexion}></Route>
       <Route path="/connexion" component={Connexion}></Route>
+      <Route path="/dash" component={StudentDashboard}></Route>
     </Switch>
 
     </Router>
